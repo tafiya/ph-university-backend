@@ -8,15 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const dotenv_1 = require("dotenv");
-// import app from "./app";
-const mongoose = require("mongoose");
+const mongoose_1 = __importDefault(require("mongoose"));
+const app_1 = __importDefault(require("./app"));
+const index_1 = __importDefault(require("./app/index"));
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield mongoose.connect();
+        try {
+            yield mongoose_1.default.connect(index_1.default.dataBase_url);
+            app_1.default.listen(index_1.default.port, () => {
+                console.log(`Example app listening on port ${index_1.default.port}`);
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
     });
 }
-app.listen(dotenv_1.config.port, () => {
-    console.log(`Example app listening on port ${dotenv_1.config.port}`);
-});
