@@ -1,15 +1,36 @@
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
-const app: Application = express();
-const port = 3000;
+import { studentsRoutes } from './app/modules/student/student.route';
 
-// parser
+const app: Application = express();
+
+//parsers
 app.use(express.json());
 app.use(cors());
-app.get('/', (req: Request, res: Response) => {
-  const a = 10;
-  res.send('Hello World!');
+
+// application routes
+app.use('/api/v1/students', studentsRoutes);
+
+const getAController = (req: Request, res: Response) => {
+  // const a = 10;
+  console.log('Happy coding');
+  // res.send(a);
+  res.json({
+    message: 'get the data',
+  });
+};
+app.post('/api/v1/students', (req: Request, res: Response) => {
+  console.log(req.body);
+  res.json({
+    message: 'students data the data',
+  });
 });
-console.log(process.cwd());
+app.get('/', getAController);
+app.post('/', (req: Request, res: Response) => {
+  console.log(req.body);
+  res.json({
+    message: 'got the data',
+  });
+});
 
 export default app;
