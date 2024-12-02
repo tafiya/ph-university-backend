@@ -10,5 +10,7 @@ route.post('/create-student', studentControllers.createStudent);
 route.get('/', studentControllers.getAllStudent);
 // will call a controller to fetch a single student data
 route.get('/:studentID', studentControllers.getStudent);
+route.delete('/:studentID', studentControllers.deleteStudent);
+route.put('/:studentID', studentControllers.updateStudent);
 
 export const studentsRoutes = route;
