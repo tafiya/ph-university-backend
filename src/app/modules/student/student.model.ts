@@ -1,6 +1,5 @@
-import bcrypt from 'bcrypt';
 import { model, Schema } from 'mongoose';
-import config from '../../index';
+
 import {
   StudentModel,
   TGuardian,
@@ -93,11 +92,13 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       required: [true, 'Id  is required'],
       unique: true,
     },
-    password: {
-      type: String,
-      trim: true,
-      required: [true, 'Id  is required'],
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'userId  is required'],
+      unique: true,
+      ref: 'User',
     },
+
     name: {
       type: userNameSchema,
       required: [true, 'Name is required'],
@@ -151,15 +152,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       required: [true, 'Local Guardian is required'],
     },
     profileImg: { type: String },
-    isActive: {
-      type: String,
-      trim: true,
-      enum: {
-        values: ['active', 'isActive'],
-        message: '{values is not supported}',
-      },
-      default: 'active',
-    },
+
     isDeleted: {
       type: Boolean,
       default: false,
@@ -177,23 +170,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
 studentSchema.virtual('fullName').get(function () {
   // return this.name.firstName + this.name.middleName + this.name.lastName;
   return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
-});
-
-// pre middleware function
-// using to hide the original password
-studentSchema.pre('save', async function (next) {
-  const user = this;
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salts_round),
-  );
-  next();
-});
-
-//  hide to save the password
-studentSchema.post('save', function (doc, next) {
-  doc.password = '';
-  next();
 });
 
 // middle ware for delate
