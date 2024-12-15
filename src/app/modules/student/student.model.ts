@@ -11,27 +11,15 @@ import {
 const userNameSchema = new Schema<TUsername>({
   firstName: {
     type: String,
-    required: [true, 'First name is required'],
+    required: [true, 'First name is required from model'],
     trim: true,
     maxlength: [20, 'First name should not be more than 20 character'],
-    // validate: {
-    //   validator: function (value: string) {
-    //     const firstNamestr =
-    //       value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-    //     return firstNamestr === value;
-    //   },
-    //   message: '{VALUE} is not capitalize',
-    // },
   },
   middleName: { type: String, trim: true },
   lastName: {
     type: String,
     trim: true,
-    required: [true, 'Last name is required'],
-    // validate: {
-    //   validator: (value: string) => validator.isAlpha(value),
-    //   message: '{VALUE} is not valid',
-    // },
+    required: [true, 'Last name is required from model'],
   },
 });
 const guardianSchema = new Schema<TGuardian>({
@@ -112,7 +100,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
         message: '{values} is no supported',
       },
     },
-    dateOfBirth: { type: String, trim: true },
+    dateOfBirth: { type: Date, trim: true },
     contactNo: {
       type: String,
       trim: true,
@@ -152,6 +140,14 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       required: [true, 'Local Guardian is required'],
     },
     profileImg: { type: String },
+    admissionSemester: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicSemester',
+    },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicDepartment',
+    },
 
     isDeleted: {
       type: Boolean,
@@ -189,17 +185,22 @@ studentSchema.pre('aggregate', function (next) {
   next();
 });
 
+// delete student
+// studentSchema.pre('findOneAndUpdate', async function (next) {
+//   const query = this.getQuery();
+//   console.log(query);
+//   const isStudentExist = await Student.findOne(query);
+//   console.log(isStudentExist);
+//   if (!isStudentExist) {
+//     console.log('call the error');
+//     throw new AppError(StatusCodes.NOT_FOUND, 'Student is not exists');
+//   }
+//   next();
+// });
 // check existing user using static methods
 studentSchema.statics.isUserExists = async function (id: string) {
   const existingUser = await Student.findOne({ id });
   return existingUser;
 };
-
-// check for existing user
-// studentSchema.methods.isUserExists = async function (id: string) {
-//   const existingUser = await Student.findOne({ id });
-//   return existingUser;
-// };
-// create student model
 
 export const Student = model<TStudent, StudentModel>('Student', studentSchema);

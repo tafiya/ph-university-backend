@@ -1,5 +1,7 @@
 import express from 'express';
+import { validateRequest } from '../../middleware/validateRequest';
 import { studentControllers } from './student.controller';
+import { studentValidation } from './student.validation';
 
 const route = express.Router();
 
@@ -7,7 +9,10 @@ const route = express.Router();
 route.get('/', studentControllers.getAllStudent);
 // will call a controller to fetch a single student data
 route.get('/:studentID', studentControllers.getStudent);
+route.patch(
+  '/:studentID',
+  validateRequest(studentValidation.updateStudentValidationSchema),
+  studentControllers.updateStudent,
+);
 route.delete('/:studentID', studentControllers.deleteStudent);
-route.put('/:studentID', studentControllers.updateStudent);
-
 export const studentsRoutes = route;
