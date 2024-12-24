@@ -12,7 +12,7 @@ const createAcademicDepartment = catchAsync(async (req, res, next) => {
     data: result,
   });
 });
-const getAllAcademicFaculties = catchAsync(async (req, res, next) => {
+const getAllAcademicDepartments = catchAsync(async (req, res, next) => {
   const result =
     await AcademicDepartmentServices.getALLAcademicDepartmentsFromDB();
   sendResponse(res, {
@@ -47,7 +47,7 @@ const updateAcademicDepartment = catchAsync(async (req, res, next) => {
 });
 export const AcademicDepartmentControllers = {
   createAcademicDepartment,
-  getAllAcademicFaculties,
+  getAllAcademicFaculties: getAllAcademicDepartments,
   getAcademicDepartment,
   updateAcademicDepartment,
 };

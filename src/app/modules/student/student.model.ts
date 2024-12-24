@@ -97,7 +97,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       trim: true,
       enum: {
         values: ['male', 'female', 'other'],
-        message: '{values} is no supported',
+        message: '{values} is not supported',
       },
     },
     dateOfBirth: { type: Date, trim: true },
@@ -143,10 +143,12 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     admissionSemester: {
       type: Schema.Types.ObjectId,
       ref: 'AcademicSemester',
+      required: true,
     },
     academicDepartment: {
       type: Schema.Types.ObjectId,
       ref: 'AcademicDepartment',
+      required: true,
     },
 
     isDeleted: {
@@ -165,7 +167,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
 
 studentSchema.virtual('fullName').get(function () {
   // return this.name.firstName + this.name.middleName + this.name.lastName;
-  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
+  return `${this?.name?.firstName} ${this?.name?.middleName} ${this?.name?.lastName}`;
 });
 
 // middle ware for delate
@@ -176,6 +178,10 @@ studentSchema.pre('find', function (next) {
 });
 // this middleware is used to hide the deleted data from searching individual
 studentSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+studentSchema.pre('findOneAndUpdate', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
