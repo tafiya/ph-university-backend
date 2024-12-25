@@ -4,8 +4,8 @@ import { facultyControllers } from './faculty.controller';
 const router = express.Router();
 
 router.get('/', facultyControllers.getAllFaculty);
-router.get('/:facultyID', facultyControllers.getFaculty);
-router.delete('/:facultyID', facultyControllers.deleteFaculty);
-router.patch('/:facultyID', facultyControllers.updateFaculty);
+router.get('/:id', facultyControllers.getFaculty);
+router.delete('/:id', facultyControllers.deleteFaculty);
+router.patch('/:id', facultyControllers.updateFaculty);
 
 export const facultyRoutes = router;

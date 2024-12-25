@@ -8,11 +8,11 @@ const route = express.Router();
 // will call a controller to fetch all student data
 route.get('/', studentControllers.getAllStudent);
 // will call a controller to fetch a single student data
-route.get('/:studentID', studentControllers.getStudent);
+route.get('/:id', studentControllers.getStudent);
 route.patch(
-  '/:studentID',
+  '/:id',
   validateRequest(studentValidation.updateStudentValidationSchema),
   studentControllers.updateStudent,
 );
-route.delete('/:studentID', studentControllers.deleteStudent);
+route.delete('/:id', studentControllers.deleteStudent);
 export const studentsRoutes = route;

@@ -13,8 +13,8 @@ const getAllFaculty = catchAsync(async (req, res, next) => {
 });
 // get a single data
 const getFaculty = catchAsync(async (req, res, next) => {
-  const { facultyID } = req.params;
-  const result = await facultyServices.getFacultyFromDB(facultyID);
+  const { id } = req.params;
+  const result = await facultyServices.getFacultyFromDB(id);
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     message: 'Single Faculty is retrieved successfully',
@@ -22,8 +22,8 @@ const getFaculty = catchAsync(async (req, res, next) => {
   });
 });
 const deleteFaculty = catchAsync(async (req, res, next) => {
-  const { facultyID } = req.params;
-  const result = await facultyServices.deleteFacultyFromDB(facultyID);
+  const { id } = req.params;
+  const result = await facultyServices.deleteFacultyFromDB(id);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
@@ -32,9 +32,9 @@ const deleteFaculty = catchAsync(async (req, res, next) => {
   });
 });
 const updateFaculty = catchAsync(async (req, res, next) => {
-  const { facultyID } = req.params;
+  const { id } = req.params;
   const { faculty } = req.body;
-  const result = await facultyServices.updateFacultyIntoDB(facultyID, faculty);
+  const result = await facultyServices.updateFacultyIntoDB(id, faculty);
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     message: 'Single Faculty is updated successfully',
