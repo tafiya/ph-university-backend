@@ -3,7 +3,9 @@ import { AcademicDepartment } from './academicDepartment.model';
 
 const createAcademicDepartmentIntoDB = async (payload: TAcademicDepartment) => {
   // call the academic model
-  const result = await AcademicDepartment.create(payload);
+  const result = (await AcademicDepartment.create(payload)).populate(
+    'academicFaculty',
+  );
   return result;
 };
 // get all student data

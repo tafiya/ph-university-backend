@@ -67,14 +67,14 @@ const updateSemesterRegistration = catchAsync(
 
 const deleteSemesterRegistration = catchAsync(
   async (req: Request, res: Response) => {
-    // const { id } = req.params;
-    // const result =
-    //   await SemesterRegistrationService.deleteSemesterRegistrationFromDB(id);
-    // sendResponse(res, {
-    //   statusCode: StatusCodes.OK,
-    //   message: 'Semester Registration is updated successfully',
-    //   data: result,
-    // });
+    const { id } = req.params;
+    const result =
+      await SemesterRegistrationService.deleteSemesterRegistrationFromDB(id);
+    sendResponse(res, {
+      statusCode: StatusCodes.OK,
+      message: 'Semester Registration is updated successfully',
+      data: result,
+    });
   },
 );
 
